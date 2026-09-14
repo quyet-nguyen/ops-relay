@@ -1,0 +1,1 @@
+hostname; id; cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null; echo NET-TEST; nc -z 192.168.3.3 6443 && echo VIP-REACHABLE
